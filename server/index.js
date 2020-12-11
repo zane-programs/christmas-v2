@@ -1,12 +1,7 @@
-const express = require("express");
+const App = require("./App"); // express wrapper
 
-// grab environment variables from .env
-require("dotenv").config();
+// create server from config
+const server = new App(require("./config"));
 
-const app = express();
-
-app.get("/", (_req, res) => res.status(200).send("Hello world!"));
-
-const listener = app.listen(process.env.API_PORT, () =>
-  console.log(`Server listening on port ${listener.address().port}`)
-);
+// start server
+server.start();
