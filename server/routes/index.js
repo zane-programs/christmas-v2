@@ -1,7 +1,9 @@
 const express = require("express");
 
-const router = express.Router();
+module.exports = function IndexRouter(io) {
+  const router = express.Router();
 
-router.get("/", (_req, res) => res.status(200).send("Hello, World!"));
+  router.get("/", (_req, res) => res.status(200).send("Hello, World!"));
 
-module.exports = router;
+  return router;
+};

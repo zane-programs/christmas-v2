@@ -1,4 +1,6 @@
 const express = require("express");
+const http = require("http");
+const socketIo = require("socket.io");
 
 // TODO: Write JSdoc comments
 class App {
@@ -14,9 +16,10 @@ class App {
     // port from config. the param
     // port is an override.
     this._registerRoutes();
-    this._app.listen(port, () => {
+    this._server = this._app.listen(port, () => {
       console.log(`Server listening on port ${port}`);
     });
+    this._initSocketIo();
   }
 
   /* PRIVATE METHODS */
@@ -27,7 +30,7 @@ class App {
       this._app.use(middleware); // register middleware in app
     }
     for (const route of this._config.routes) {
-      this._app.use(route.path, require(route.routerPath)); // register router to route path
+      this._app.use(route.path, require(route.routerPath)(this._io)); // register router to route path
     }
     // catch-all 404 route (I will improve this later)
     this._app.all("*", (req, res) =>
@@ -41,6 +44,16 @@ class App {
         },
       })
     );
+  }
+
+  _initSocketIo() {
+    this._io = socketIo(this._server, this._config.socketIo); // init Socket.io service
+    this._io.on("connection", (socket) => {
+      console.log("client connected");
+      socket.on("disconnect", () => {
+        console.log("client disconnected");
+      });
+    });
   }
 }
 

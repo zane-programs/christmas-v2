@@ -10,14 +10,15 @@
     "@types/node": "^12.19.8",
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "hue-bridge-emulator": "tim-hellhake/hue-bridge-emulator",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
     "socket.io": "^3.0.4",
     "typescript": "^4.1.2",
-    "web-vitals": "^0.2.4",
-    "hue-bridge-emulator": "tim-hellhake/hue-bridge-emulator"
+    "web-vitals": "^0.2.4"
   },
   "scripts": {
     "start": "react-app-rewired start",

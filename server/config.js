@@ -9,6 +9,17 @@ module.exports = {
       routerPath: "./routes", // index.js is inferred
     },
   ],
-  // this will hold any middleware I add later
-  middlewares: [],
+  middlewares: [
+    require("cors")({
+      credentials: true,
+      origin: "*",
+    }),
+  ],
+  socketIo: {
+    cors: {
+      origin: true,
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
+  },
 };
