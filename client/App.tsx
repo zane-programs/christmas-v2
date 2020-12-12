@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { createContext, useMemo } from "react";
+import { Outlet, Route, Routes } from "react-router";
+import io from "socket.io-client";
 
-function App() {
+/* TODO: use React.lazy for these and add a loading spinner */
+// pages
+import Home from "./pages/Home";
+
+export default function App() {
+  const socket = useMemo(
+    () => io(process.env.REACT_APP_API_HOST as string),
+    []
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <SocketContext.Provider value={{ socket }}>
+      <Routes>
+        <Route path="/" element={<AppLayout />}>
+          <Route path="/" element={<Home />} />
+        </Route>
+      </Routes>
+    </SocketContext.Provider>
   );
 }
 
-export default App;
+export const SocketContext = createContext({
+  socket: {} as SocketIOClient.Socket,
+});
+
+function AppLayout() {
+  // TODO: Make this a real app layout
+  return <Outlet />;
+}
