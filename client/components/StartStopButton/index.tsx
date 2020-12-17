@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { forwardRef, useMemo } from "react";
 import styles from "./StartStopButton.module.css";
 
 interface StartStopButtonProps
@@ -10,12 +10,15 @@ interface StartStopButtonProps
   bgColor?: string;
 }
 
-export default function StartStopButton({
-  isPlaying,
-  style,
-  bgColor,
-  ...props // other props
-}: StartStopButtonProps) {
+const StartStopButton = forwardRef(function StartStopButton(
+  {
+    isPlaying,
+    style,
+    bgColor,
+    ...props // other props
+  }: StartStopButtonProps,
+  ref
+) {
   // button styling
   const buttonStyle: React.CSSProperties = useMemo(() => {
     return { ...(style || {}), backgroundColor: bgColor || "#ff0000" };
@@ -27,6 +30,7 @@ export default function StartStopButton({
       aria-label={isPlaying ? "Stop" : "Play"}
       style={buttonStyle}
       {...props}
+      ref={ref as React.RefObject<HTMLButtonElement> | null | undefined}
     >
       <div
         className={
@@ -35,4 +39,6 @@ export default function StartStopButton({
       ></div>
     </button>
   );
-}
+});
+
+export default StartStopButton;

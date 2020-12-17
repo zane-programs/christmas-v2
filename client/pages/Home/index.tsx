@@ -1,4 +1,4 @@
-import { useContext, useCallback } from "react";
+import { useContext, useCallback, useRef, useEffect } from "react";
 
 // context
 import { SocketContext, StatusContext, ThemeContext } from "../../App";
@@ -13,6 +13,11 @@ export default function Home() {
   const status = useContext(StatusContext);
   const { theme } = useContext(ThemeContext);
 
+  const startStopButtonRef:
+    | React.RefObject<HTMLButtonElement>
+    | null
+    | undefined = useRef(null); // will hold button reference
+
   const togglePlay = useCallback(
     // in true means that this is an event that
     // will result in a status change
@@ -20,12 +25,19 @@ export default function Home() {
     [emitEvent, status]
   );
 
+  // focus button on status change (because
+  // it disables while waiting for server)
+  useEffect(() => {
+    if (!isUpdatingStatus) startStopButtonRef.current?.focus();
+  }, [isUpdatingStatus]);
+
   return isConnected ? (
     <StartStopButton
       onClick={togglePlay}
       isPlaying={status.isPlaying}
       disabled={isUpdatingStatus}
       bgColor={theme.mainColor}
+      ref={startStopButtonRef}
     />
   ) : (
     <div>Connecting...</div>
