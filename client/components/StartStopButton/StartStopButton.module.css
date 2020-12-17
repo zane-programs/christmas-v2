@@ -1,5 +1,5 @@
 .button {
-  background-color: #f00;
+  /* background-color: #f00; */
 
   border: none;
   -webkit-tap-highlight-color: transparent;
@@ -9,7 +9,7 @@
   border-radius: 50%;
   position: relative;
 
-  transition: background-color 300ms ease;
+  /* transition: background-color 300ms ease; */
 
   user-select: none;
   cursor: pointer;
@@ -36,7 +36,7 @@
   border-bottom: 50px solid transparent;
   border-right: 0px solid transparent;
 
-  transform: translate(calc(-50% + 10px), -50%);
+  transform: translate(calc(-50% + 10px), -50%) rotate(0deg);
 
   border-radius: 0px;
 }
@@ -47,7 +47,7 @@
   border-bottom: 50px solid #fff;
   border-right: 50px solid #fff;
 
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) rotate(-90deg);
 
   border-radius: 8px;
 }

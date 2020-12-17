@@ -1,7 +1,9 @@
 import { useContext, useCallback } from "react";
 
 // context
-import { SocketContext, StatusContext } from "../../App";
+import { SocketContext, StatusContext, ThemeContext } from "../../App";
+
+// components
 import StartStopButton from "../../components/StartStopButton";
 
 export default function Home() {
@@ -9,6 +11,7 @@ export default function Home() {
     SocketContext
   );
   const status = useContext(StatusContext);
+  const { theme } = useContext(ThemeContext);
 
   const togglePlay = useCallback(
     // in true means that this is an event that
@@ -22,6 +25,7 @@ export default function Home() {
       onClick={togglePlay}
       isPlaying={status.isPlaying}
       disabled={isUpdatingStatus}
+      bgColor={theme.mainColor}
     />
   ) : (
     <div>Connecting...</div>

@@ -9,6 +9,9 @@ import {
 import { Outlet, Route, Routes } from "react-router";
 import io from "socket.io-client";
 
+// theme
+import defaultTheme from "./theme";
+
 /* TODO: use React.lazy for these and add a loading spinner */
 // pages
 import Home from "./pages/Home";
@@ -20,8 +23,8 @@ export default function App() {
   );
 
   const [isConnected, setIsConnected] = useState(false);
-
   const [status, setStatus] = useState({ isPlaying: false } as ChristmasStatus);
+  const [theme, setTheme] = useState(defaultTheme); // will probably add option to change it
 
   const [isUpdatingStatus, setUpdatingStatus] = useState(true);
 
@@ -47,19 +50,22 @@ export default function App() {
       value={{ emitEvent, isConnected, isUpdatingStatus }}
     >
       <StatusContext.Provider value={status}>
-        <Routes>
-          <Route path="/" element={<AppLayout />}>
-            <Route path="/" element={<Home />} />
-          </Route>
-        </Routes>
+        <ThemeContext.Provider value={{ theme, setTheme }}>
+          <Routes>
+            <Route path="/" element={<AppLayout />}>
+              <Route path="/" element={<Home />} />
+            </Route>
+          </Routes>
+        </ThemeContext.Provider>
       </StatusContext.Provider>
     </SocketContext.Provider>
   );
 }
 
 export const SocketContext = createContext({} as SocketContextInterface);
-
 export const StatusContext = createContext({} as ChristmasStatus);
+// created context just in case I ever want to change theme dynamically
+export const ThemeContext = createContext({} as ThemeContextInterface);
 
 function AppLayout() {
   // TODO: Make this a real app layout+
@@ -84,4 +90,13 @@ interface SocketContextInterface {
 
 interface ChristmasStatus {
   isPlaying: false;
+}
+
+export interface Theme {
+  mainColor: string;
+}
+
+interface ThemeContextInterface {
+  theme: Theme;
+  setTheme: React.Dispatch<React.SetStateAction<Theme>>;
 }
