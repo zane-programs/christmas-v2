@@ -10,7 +10,7 @@ import { Outlet, Route, Routes } from "react-router";
 import io from "socket.io-client";
 
 // theme
-import defaultTheme from "./theme";
+import defaultTheme, { Theme } from "./theme";
 
 /* TODO: use React.lazy for these and add a loading spinner */
 // pages
@@ -23,7 +23,10 @@ export default function App() {
   );
 
   const [isConnected, setIsConnected] = useState(false);
-  const [status, setStatus] = useState({ isPlaying: false } as ChristmasStatus);
+  const [status, setStatus] = useState({
+    isPlaying: false,
+    lightsOn: false,
+  } as ChristmasStatus);
   const [theme, setTheme] = useState(defaultTheme); // will probably add option to change it
 
   const [isUpdatingStatus, setUpdatingStatus] = useState(true);
@@ -70,14 +73,51 @@ export const ThemeContext = createContext({} as ThemeContextInterface);
 function AppLayout() {
   // TODO: Make this a real app layout+
   const status = useContext(StatusContext);
+  const { theme } = useContext(ThemeContext);
   const { isConnected, isUpdatingStatus } = useContext(SocketContext);
+
+  // set bg color of page as well
+  useEffect(() => {
+    document.body.style.backgroundColor = theme.backgroundColor;
+  }, [theme.backgroundColor]);
+
+  // SHOULD stop dragging and zooming
+  const handleTouchStart = useCallback(
+    (event: React.TouchEvent<HTMLDivElement>) => {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+    },
+    []
+  );
+
   return (
-    <>
-      <p>Playing: {JSON.stringify(status.isPlaying)}</p>
-      <p>Is Connected: {JSON.stringify(isConnected)}</p>
-      <p>Is Updating Status: {JSON.stringify(isUpdatingStatus)}</p>
+    <div
+      style={{ backgroundColor: theme.backgroundColor }}
+      onTouchStart={handleTouchStart}
+    >
+      <ul>
+        <li>
+          <strong>Is Connected:</strong> {JSON.stringify(isConnected)}
+        </li>
+        <li>
+          <strong>Is Updating Status:</strong>{" "}
+          {JSON.stringify(isUpdatingStatus)}
+        </li>
+        <li>
+          <strong>Status:</strong>
+        </li>
+        <ul>
+          {Object.keys(status).map((statusKey) => (
+            <li key={`status.${statusKey}`}>
+              <strong>{statusKey}:</strong>{" "}
+              {JSON.stringify((status as any)[statusKey])}
+            </li>
+          ))}
+        </ul>
+      </ul>
       <Outlet />
-    </>
+    </div>
   );
 }
 
@@ -89,11 +129,8 @@ interface SocketContextInterface {
 }
 
 interface ChristmasStatus {
-  isPlaying: false;
-}
-
-export interface Theme {
-  mainColor: string;
+  isPlaying: boolean;
+  lightsOn: boolean;
 }
 
 interface ThemeContextInterface {

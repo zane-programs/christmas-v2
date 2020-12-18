@@ -22,4 +22,5 @@ module.exports = {
       credentials: true,
     },
   },
+  wemoSerialNumber: process.env.WEMO_SERIAL_NUMBER,
 };

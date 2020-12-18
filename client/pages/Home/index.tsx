@@ -1,4 +1,5 @@
 import { useContext, useCallback, useRef, useEffect } from "react";
+import Confetti from "react-dom-confetti";
 
 // context
 import { SocketContext, StatusContext, ThemeContext } from "../../App";
@@ -31,7 +32,6 @@ export default function Home() {
   useEffect(() => {
     // stop on first page render
     if (isFirstRender.current) {
-      console.log("first");
       isFirstRender.current = false;
       return;
     }
@@ -41,13 +41,30 @@ export default function Home() {
   }, [isUpdatingStatus]);
 
   return isConnected ? (
-    <StartStopButton
-      onClick={togglePlay}
-      isPlaying={status.isPlaying}
-      disabled={isUpdatingStatus}
-      bgColor={theme.mainColor}
-      ref={startStopButtonRef}
-    />
+    <>
+      <Confetti
+        active={status.lightsOn}
+        config={{
+          angle: 90,
+          spread: 400,
+          startVelocity: 45,
+          elementCount: 100,
+          dragFriction: 0.12,
+          duration: 4500,
+          stagger: 3,
+          width: "10px",
+          height: "10px",
+          colors: theme.confettiColors,
+        }}
+      />
+      <StartStopButton
+        onClick={togglePlay}
+        isPlaying={status.isPlaying}
+        disabled={isUpdatingStatus}
+        bgColor={theme.mainColor}
+        ref={startStopButtonRef}
+      />
+    </>
   ) : (
     <div>Connecting...</div>
   );

@@ -5,12 +5,22 @@ module.exports = class WemoAdapter {
     this._client = null;
     this._changeListeners = [];
     this._wemo = new Wemo();
+    this._serialNumber = serialNumber;
+  }
 
+  init(cb) {
+    console.log("init wemo");
     const self = this;
     this._wemo.discover(function discoverDevices(_err, deviceInfo) {
-      if (deviceInfo.serialNumber === serialNumber) {
+      console.log("found one");
+      if (deviceInfo.serialNumber === self._serialNumber) {
+        console.log("found THE one");
         self._client = self._wemo.client(deviceInfo);
-        self._client.on("binaryState", self._runChangeListeners.bind(self));
+        self._client.on("binaryState", (value) => {
+          console.log(`Binary state changed to ${value}`);
+          self._runChangeListeners(value);
+        });
+        cb(); // done!
       }
     });
   }
@@ -24,7 +34,8 @@ module.exports = class WemoAdapter {
           err ? reject(err) : resolve(Boolean(parseInt(state)));
         });
       } else {
-        reject(new Error("Client not ready yet, please wait"));
+        // reject(new Error("Client not ready yet, please wait"));
+        resolve(false);
       }
     });
   }
@@ -38,7 +49,8 @@ module.exports = class WemoAdapter {
           err ? reject(err) : resolve()
         );
       } else {
-        reject(new Error("Client not ready yet, please wait"));
+        // reject(new Error("Client not ready yet, please wait"));
+        console.log("Client not ready yet, please wait to set state");
       }
     });
   }
@@ -57,31 +69,8 @@ module.exports = class WemoAdapter {
     // run all change listeners
     // when binary state changes
     for (const listener of this._changeListeners) {
-      listener(Boolean(value));
+      listener(Boolean(parseInt(value)));
+      console.log("Listener fired");
     }
   }
 };
-
-// var Wemo = require('wemo-client');
-// var wemo = new Wemo();
-
-// wemo.discover(function(err, deviceInfo) {
-//   console.log('Wemo Device Found: %j', deviceInfo.serialNumber);
-
-//   // Get the client for the found device
-//   var client = wemo.client(deviceInfo);
-
-//   // You definitely want to listen to error events (e.g. device went offline),
-//   // Node will throw them as an exception if they are left unhandled
-//   client.on('error', function(err) {
-//     console.log('Error: %s', err.code);
-//   });
-
-//   // Handle BinaryState events
-//   client.on('binaryState', function(value) {
-//     console.log('Binary State changed to: %s', value);
-//   });
-
-//   // Turn the switch on
-//   client.setBinaryState(1);
-// });
