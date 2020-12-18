@@ -17,6 +17,7 @@ export default function Home() {
     | React.RefObject<HTMLButtonElement>
     | null
     | undefined = useRef(null); // will hold button reference
+  const isFirstRender = useRef(true); // whether or not this is the first render
 
   const togglePlay = useCallback(
     // in true means that this is an event that
@@ -28,7 +29,15 @@ export default function Home() {
   // focus button on status change (because
   // it disables while waiting for server)
   useEffect(() => {
-    if (!isUpdatingStatus) startStopButtonRef.current?.focus();
+    // stop on first page render
+    if (isFirstRender.current) {
+      console.log("first");
+      isFirstRender.current = false;
+      return;
+    }
+    // focus otherwise
+    if (!isUpdatingStatus && !isFirstRender.current)
+      startStopButtonRef.current?.focus();
   }, [isUpdatingStatus]);
 
   return isConnected ? (

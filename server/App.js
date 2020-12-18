@@ -77,19 +77,17 @@ class App {
     const self = this;
 
     this._io.on("connection", (socket) => {
+      // emit status on client connection
       socket.emit("status", this.getStatus());
 
-      socket.on("play", (...args) => {
-        self._cueShow();
-      });
-      socket.on("stop", (...args) => {
-        self._stopShow();
-      });
+      // listen for play/stop events
+      socket.on("play", self._cueShow.bind(self));
+      socket.on("stop", self._stopShow.bind(self));
     });
   }
 
   _emitStatus() {
-    // run this on play
+    // emit status (for when status changes)
     if (this._io && this._io.emit) this._io.emit("status", this.getStatus());
   }
 }
