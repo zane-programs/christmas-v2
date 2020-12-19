@@ -119,6 +119,11 @@ class App {
       // listen for play/stop events
       socket.on("play", this._cueShow.bind(this));
       socket.on("stop", this._stopShow.bind(this));
+
+      socket.on(
+        "toggleLight",
+        this.wemoAdapter.toggleState.bind(this.wemoAdapter)
+      );
     });
   }
 

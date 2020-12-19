@@ -1,5 +1,6 @@
 import { useContext, useCallback, useRef, useEffect } from "react";
 import Confetti from "react-dom-confetti";
+import { HiLightBulb, HiOutlineLightBulb } from "react-icons/hi";
 
 // context
 import { SocketContext, StatusContext, ThemeContext } from "../../App";
@@ -46,14 +47,14 @@ export default function Home() {
         active={status.lightsOn}
         config={{
           angle: 90,
-          spread: 400,
-          startVelocity: 45,
-          elementCount: 100,
-          dragFriction: 0.12,
-          duration: 4500,
+          spread: window.innerWidth,
+          startVelocity: Math.round(85 * (window.innerWidth / 1100)),
+          elementCount: Math.round(500 * (window.innerWidth / 1000)),
+          dragFriction: 0.1,
+          duration: 5500,
           stagger: 3,
-          width: "10px",
-          height: "10px",
+          width: "12px",
+          height: "12px",
           colors: theme.confettiColors,
         }}
       />
@@ -64,6 +65,13 @@ export default function Home() {
         bgColor={theme.mainColor}
         ref={startStopButtonRef}
       />
+      <button
+        onClick={() => emitEvent(true, "toggleLight")}
+        disabled={status.isPlaying || isUpdatingStatus}
+      >
+        {status.lightsOn ? <HiLightBulb /> : <HiOutlineLightBulb />}
+        Turn Light {status.lightsOn ? "Off" : "On"}
+      </button>
     </>
   ) : (
     <div>Connecting...</div>

@@ -55,6 +55,11 @@ module.exports = class WemoAdapter {
     });
   }
 
+  async toggleState() {
+    const state = await this.getState();
+    await this.setState(!state);
+  }
+
   addChangeListener(listener) {
     this._changeListeners.push(listener);
   }
