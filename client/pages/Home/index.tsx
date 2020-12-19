@@ -1,5 +1,5 @@
-import { useContext, useCallback, useRef, useEffect } from "react";
-import Confetti from "react-dom-confetti";
+import { useContext, useCallback, useRef, useEffect, useMemo } from "react";
+import Confetti, { ConfettiConfig } from "react-dom-confetti";
 import { HiLightBulb, HiOutlineLightBulb } from "react-icons/hi";
 
 // context
@@ -14,6 +14,21 @@ export default function Home() {
   );
   const status = useContext(StatusContext);
   const { theme } = useContext(ThemeContext);
+
+  const confettiConfig: ConfettiConfig = useMemo(() => {
+    return {
+      angle: 90,
+      spread: window.innerWidth,
+      startVelocity: Math.round(85 * (window.innerWidth / 1100)),
+      elementCount: Math.round(500 * (window.innerWidth / 1000)),
+      dragFriction: 0.1,
+      duration: 5500,
+      stagger: 3,
+      width: "12px",
+      height: "12px",
+      colors: theme.confettiColors,
+    };
+  }, [theme.confettiColors]);
 
   const startStopButtonRef:
     | React.RefObject<HTMLButtonElement>
@@ -43,21 +58,7 @@ export default function Home() {
 
   return isConnected ? (
     <>
-      <Confetti
-        active={status.lightsOn}
-        config={{
-          angle: 90,
-          spread: window.innerWidth,
-          startVelocity: Math.round(85 * (window.innerWidth / 1100)),
-          elementCount: Math.round(500 * (window.innerWidth / 1000)),
-          dragFriction: 0.1,
-          duration: 5500,
-          stagger: 3,
-          width: "12px",
-          height: "12px",
-          colors: theme.confettiColors,
-        }}
-      />
+      <Confetti active={status.lightsOn} config={confettiConfig} />
       <StartStopButton
         onClick={togglePlay}
         isPlaying={status.isPlaying}

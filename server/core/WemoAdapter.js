@@ -45,9 +45,11 @@ module.exports = class WemoAdapter {
     // the boolean to a number
     return new Promise((resolve, reject) => {
       if (this.clientReady) {
-        this._client.setBinaryState(Number(state), (err, _response) =>
-          err ? reject(err) : resolve()
-        );
+        this._client.setBinaryState(Number(state), (err, _response) => {
+          // just in case the subscription fails, send the state in 600 ms
+          setTimeout(() => this._runChangeListeners(this.getState()), 600);
+          err ? reject(err) : resolve();
+        });
       } else {
         // reject(new Error("Client not ready yet, please wait"));
         console.log("Client not ready yet, please wait to set state");

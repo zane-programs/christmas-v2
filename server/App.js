@@ -52,7 +52,8 @@ class App {
 
   async _cueShow() {
     // don't run if currently playing
-    if (this.getStatus().isPlaying) return;
+    const status = await this.getStatus();
+    if (status.isPlaying) return;
 
     /* START THE SHOW */
     this._showIsPlaying.setState(true);
