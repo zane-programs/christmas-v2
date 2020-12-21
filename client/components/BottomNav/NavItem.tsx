@@ -2,6 +2,9 @@ import { memo, useMemo } from "react";
 import { IconType } from "react-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 
+// components
+import ScreenReaderText from "../ScreenReaderText";
+
 // styles
 import styles from "./BottomNav.module.css";
 
@@ -27,19 +30,21 @@ function NavItem({ name, Icon, ActiveIcon, path }: NavItemInterface) {
   }, []);
 
   return (
-    <li
+    <button
       className={styles.navItem + (isActive ? " " + styles.activeItem : "")}
       onClick={() => navigate(path)}
+      title={name}
       aria-label={name}
-      role="button"
+      // role="button"
+      tabIndex={0}
     >
       {isActive && ActiveIcon ? (
         <ActiveIcon {...iconProps} />
       ) : (
         <Icon {...iconProps} />
       )}
-      {/* {name} */}
-    </li>
+      <ScreenReaderText>{name}</ScreenReaderText>
+    </button>
   );
 }
 

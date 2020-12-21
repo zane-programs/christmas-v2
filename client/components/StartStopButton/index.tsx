@@ -1,4 +1,5 @@
 import { forwardRef, useMemo } from "react";
+import ScreenReaderText from "../ScreenReaderText";
 import styles from "./StartStopButton.module.css";
 
 interface StartStopButtonProps
@@ -24,10 +25,13 @@ const StartStopButton = forwardRef(function StartStopButton(
     return { ...(style || {}), backgroundColor: bgColor || "#ff0000" };
   }, [bgColor, style]);
 
+  //
+  const hiddenButtonText = useMemo(() => isPlaying ? "Stop" : "Play", [isPlaying]);
+
   return (
     <button
       className={styles.button}
-      aria-label={isPlaying ? "Stop" : "Play"}
+      aria-label={hiddenButtonText}
       style={buttonStyle}
       {...props}
       ref={ref as React.RefObject<HTMLButtonElement> | null | undefined}
@@ -36,7 +40,9 @@ const StartStopButton = forwardRef(function StartStopButton(
         className={
           styles.icon + " " + (isPlaying ? styles.square : styles.triangle)
         }
-      ></div>
+      >
+        <ScreenReaderText>{hiddenButtonText}</ScreenReaderText>
+      </div>
     </button>
   );
 });

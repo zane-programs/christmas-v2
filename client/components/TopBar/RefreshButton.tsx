@@ -1,5 +1,6 @@
 import { memo, useCallback, useState } from "react";
 import { IoRefresh } from "react-icons/io5";
+import ScreenReaderText from "../ScreenReaderText";
 
 // styles
 import styles from "./TopBar.module.css";
@@ -18,8 +19,11 @@ function RefreshButton() {
     <button
       className={styles.refreshButton + (active ? " " + styles.active : "")}
       onClick={reloadPage}
+      aria-label="Refresh"
+      title="Refresh"
     >
       <IoRefresh className={styles.refreshButtonIcon} />
+      <ScreenReaderText>Refresh</ScreenReaderText>
     </button>
   );
 }

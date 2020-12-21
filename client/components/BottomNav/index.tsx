@@ -21,11 +21,11 @@ function BottomNav() {
         height: `calc(env(safe-area-inset-top, 0px) + ${theme.bottomNavHeight})`,
       }}
     >
-      <ul>
-        {navItems.map((props) => (
-          <NavItem {...props} key={props.path} />
-        ))}
-      </ul>
+      {/* <ul> */}
+      {navItems.map((props) => (
+        <NavItem {...props} key={props.path} />
+      ))}
+      {/* </ul> */}
     </nav>
   );
 }

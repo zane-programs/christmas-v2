@@ -48,7 +48,8 @@
   background-color: transparent;
 
   border: none;
-  outline: none;
+  /* outline: none; */
+  -webkit-tap-highlight-color: transparent;
 
   font-size: 30px;
   width: 60px;
