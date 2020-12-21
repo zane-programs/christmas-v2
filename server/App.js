@@ -6,7 +6,6 @@ const AudioPlayer = require("./core/AudioPlayer");
 const WemoAdapter = require("./core/WemoAdapter");
 const State = require("./core/State");
 
-// TODO: Write JSdoc comments
 class App {
   constructor(config) {
     this._config = config; // app config
@@ -27,7 +26,11 @@ class App {
     this._app.disable("x-powered-by"); // hide Express X-Powered-By header
   }
 
-  // start server
+  /**
+   * Starts the server with desired port
+   * number or port from provided config
+   * @param {number} port
+   */
   async start(port = this._config.port) {
     // if no port provided, will use
     // port from config. the param
@@ -41,9 +44,11 @@ class App {
     });
   }
 
+  /**
+   * Gets current server status
+   */
   async getStatus() {
     return {
-      // isPlaying: this._showIsPlaying.currentState || this.audioPlayer.isPlaying,
       isPlaying: this._showIsPlaying.currentState,
       lightsOn: await this.wemoAdapter.getState(),
     };
@@ -51,6 +56,9 @@ class App {
 
   /* PRIVATE METHODS */
 
+  /**
+   * Starts the light/music show
+   */
   async _cueShow() {
     console.log("***** STARTING SHOW... *****");
     // don't run if currently playing
@@ -97,6 +105,11 @@ class App {
     await this._cueShowEnd(originalStatus.lightsOn);
   }
 
+  /**
+   * End-code for _cueShow (runs once the
+   * audio player process stops)
+   * @param {boolean} lightsOn
+   */
   async _cueShowEnd(lightsOn = false) {
     console.log("***** STOPPING SHOW... *****");
     console.log(`*** We will set light state to ${lightsOn} ***`);
@@ -106,12 +119,18 @@ class App {
     console.log("******* STOW SHOPPED *******");
   }
 
+  /**
+   * Stops the audio player, thereby causing
+   * _cueShowEnd to run
+   */
   async _stopShow() {
     // this will automatically cause _cueShowEnd to run
     this.audioPlayer.stop();
   }
 
-  // register routes with app
+  /**
+   * Register routes in the Express app
+   */
   _registerRoutes() {
     for (const middleware of this._config.middlewares) {
       this._app.use(middleware); // register middleware in app
@@ -133,6 +152,11 @@ class App {
     );
   }
 
+  /**
+   * Initialize Socket.io and bind
+   * _cueShow and _stopShow methods
+   * to the "play" and "stop" events
+   */
   _initSocketIo() {
     this._io.on("connection", async (socket) => {
       // emit status on client connection
@@ -149,6 +173,10 @@ class App {
     });
   }
 
+  /**
+   * Initialize Wemo adapter, and once
+   * ready, attach the event listener
+   */
   _initWemo() {
     return new Promise((resolve) => {
       this.wemoAdapter.init(() => {
@@ -158,6 +186,10 @@ class App {
     });
   }
 
+  /**
+   * Emits server status to the client
+   * when called
+   */
   async _emitStatus() {
     // emit status (for when status changes)
     console.log("Status change"); // will prob remove later

@@ -25,6 +25,15 @@ module.exports = class AudioPlayer {
     process.on("uncaughtException", () => this._handleExit());
   }
 
+  /**
+   * Plays an audio file using provided
+   * path. If forcePlay is true, then it
+   * will override the current audio
+   * process and will play the given file
+   * instead.
+   * @param {string} filePath file path
+   * @param {boolean} forcePlay whether or not player should override current audio
+   */
   playAudio(filePath, forcePlay = false) {
     return new Promise((resolve, reject) => {
       if (this.isPlaying && !forcePlay) {
@@ -46,26 +55,27 @@ module.exports = class AudioPlayer {
     });
   }
 
+  /**
+   * Stops the current audio process
+   */
   stop() {
     // kills audio process
     if (this._audioProcess && this._audioProcess.kill) {
-      // this._audioProcess.stdin.pause();
       this._audioProcess.kill();
     }
   }
 
+  /**
+   * Returns player state
+   */
   get isPlaying() {
-    // if (!this._audioProcess && !this._isPlayingInternalState.currentState)
-    //   return false;
-    // return (
-    //   this._isPlayingInternalState.currentState || !this._audioProcess.killed
-    // );
-    // ------------
-    // if (!this._audioProcess) return false;
-    // if (this._audioProcess.killed) return false;
     return this._isPlayingInternalState.currentState;
   }
 
+  /**
+   * Cleanup function of AudioPlayer
+   * @param {boolean} shouldProcessExit whether or not process.exit should be called
+   */
   _handleExit(shouldProcessExit = false) {
     this.stop();
     // Added this in because a few of the exit listeners
@@ -74,6 +84,10 @@ module.exports = class AudioPlayer {
     if (shouldProcessExit) process.exit(0);
   }
 
+  /**
+   * Runs status change event listener (if available).
+   * Called when player state changes.
+   */
   _triggerStatusChangeEvent() {
     if (this._options.onStatusChange) {
       this._options.onStatusChange(this.isPlaying);

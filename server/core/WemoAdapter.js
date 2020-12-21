@@ -8,17 +8,14 @@ module.exports = class WemoAdapter {
     this._serialNumber = serialNumber;
     this._previousState = null;
 
-    // workaround part 2
-    setInterval(async () => {
-      // just in case the subscription fails
-      let currentState = await this.getState();
-      if (this._previousState != currentState) {
-        this._runChangeListeners(currentState);
-      }
-      this._previousState = currentState;
-    }, 1000);
+    this._startSubscriptionBackupLoop();
   }
 
+  /**
+   * Initializes Wemo adapter and then runs
+   * callback function when done (cb)
+   * @param {function} cb callback function
+   */
   init(cb) {
     console.log("init wemo");
     const self = this;
@@ -38,6 +35,9 @@ module.exports = class WemoAdapter {
     });
   }
 
+  /**
+   * Gets current binaryState of plug (true or false)
+   */
   getState() {
     // converts number binaryState value
     // to a boolean
@@ -53,6 +53,10 @@ module.exports = class WemoAdapter {
     });
   }
 
+  /**
+   * Sets binaryState of plug (true or false)
+   * @param {boolean} state binary state of the switch (true = on, false = off)
+   */
   setState(state) {
     // takes a boolean value, converting
     // the boolean to a number
@@ -70,26 +74,61 @@ module.exports = class WemoAdapter {
     });
   }
 
+  /**
+   * Toggles state
+   */
   async toggleState() {
     const state = await this.getState();
     await this.setState(!state);
   }
 
+  /**
+   * Adds change listener that runs when
+   * the binary state changes
+   * @param {function} listener
+   */
   addChangeListener(listener) {
     this._changeListeners.push(listener);
   }
 
+  /**
+   * Checks whether or not the client is ready
+   */
   get clientReady() {
     // deliberate use of abstract
     // equality comparison
     return this._client != null;
   }
 
+  /**
+   * Runs any attached change listeners
+   * @param {string} value raw binaryState from client
+   */
   _runChangeListeners(value) {
     // run all change listeners
     // when binary state changes
     for (const listener of this._changeListeners) {
       listener(Boolean(parseInt(value)));
     }
+  }
+
+  /**
+   * Starts backup interval in case the
+   * binaryState subscription fails.
+   * Essentially, if the subscription fails,
+   * this will manually check the state and
+   * store it. If the state is altered, it
+   * will run the change listeners with the
+   * new state.
+   */
+  _startSubscriptionBackupLoop() {
+    setInterval(async () => {
+      // just in case the subscription fails
+      let currentState = await this.getState();
+      if (this._previousState != currentState) {
+        this._runChangeListeners(currentState);
+      }
+      this._previousState = currentState;
+    }, 1000);
   }
 };
