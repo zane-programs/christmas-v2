@@ -11,8 +11,8 @@ My Christmas project update for 2020 (original project is [node-christmas](https
 
 ## TODO
 
-1. style application
-2. add settings menu
+1. style application* **_[in progress]_**
+2. add settings menu **_[in progress]_**
 3. (maybe) integrate with Harmony Bridge by using [hue-bridge-emulator](https://github.com/tim-hellhake/hue-bridge-emulator) like last year
 
 ## Acknowledgements
