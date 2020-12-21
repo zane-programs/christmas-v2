@@ -1,0 +1,51 @@
+.bottomNav {
+  width: 100%;
+  /* height: 120px; */
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  z-index: 9997;
+}
+
+.bottomNav ul {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bottomNav .navItem {
+  flex: 1 1 0px;
+  padding: 10px;
+  /* display: block; */
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+
+  background: transparent;
+
+  color: #ccc;
+
+  transition: all 100ms ease;
+
+  position: relative;
+}
+
+.bottomNav .navItem.activeItem {
+  background: rgba(0, 0, 0, 0.15);
+  color: #fff;
+}
+
+.bottomNav .navItem .navItemIcon {
+  font-size: 50px;
+  position: absolute;
+  top: calc(50% - (env(safe-area-inset-bottom, 0px) / 2));
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -1,9 +1,14 @@
 const express = require("express");
 
+// get env vars
+require("dotenv").config();
+
 module.exports = function IndexRouter(app, _io) {
   const router = express.Router();
 
-  router.get("/", (_req, res) => res.status(200).send("Hello, World!"));
+  router.get("/", (req, res) =>
+    res.redirect(`http://${getHostname(req.headers.host)}:3000`)
+  );
 
   router.get("/isPlaying", (_req, res) =>
     res.status(200).send(app.audioPlayer.isPlaying)
@@ -48,5 +53,12 @@ module.exports = function IndexRouter(app, _io) {
     res.status(200).send(app.wemoAdapter.clientReady)
   );
 
+  router.get("/stopServer", (_req, _res) => process.exit(0));
+
   return router;
 };
+
+function getHostname(host) {
+  const hostSplit = host.split(":");
+  return hostSplit[0];
+}

@@ -1,3 +1,4 @@
+const path = require("path");
 const http = require("http");
 const express = require("express");
 const socketIo = require("socket.io");
@@ -51,9 +52,11 @@ class App {
   /* PRIVATE METHODS */
 
   async _cueShow() {
+    console.log("***** STARTING SHOW... *****");
     // don't run if currently playing
-    const status = await this.getStatus();
-    if (status.isPlaying) return;
+    const originalStatus = await this.getStatus();
+    console.log(originalStatus || "nah");
+    if (originalStatus.isPlaying) return;
 
     /* START THE SHOW */
     this._showIsPlaying.setState(true);
@@ -64,14 +67,24 @@ class App {
     try {
       // play "Ho, ho, ho!" track
       await this.audioPlayer.playAudio(
-        "/Users/zooza310/node-christmas/hohoho.wav"
+        path.resolve(
+          __dirname,
+          this._config.audio.directory,
+          this._config.audio.intro
+        )
+        // "/Users/zooza310/node-christmas/hohoho.wav"
       );
 
       // turn on the lights
       await this.wemoAdapter.setState(true); // start wemo switch
 
       await this.audioPlayer.playAudio(
-        "/Users/zooza310/node-christmas/mariahcarey.wav"
+        // "/Users/zooza310/node-christmas/mariahcarey.wav"
+        path.resolve(
+          __dirname,
+          this._config.audio.directory,
+          this._config.audio.main
+        )
       );
     } catch (e) {
       // any error message will be spit out
@@ -81,13 +94,21 @@ class App {
     }
 
     /* STOP THE SHOW */
-    await this._stopShow();
+    await this._cueShowEnd(originalStatus.lightsOn);
+  }
+
+  async _cueShowEnd(lightsOn = false) {
+    console.log("***** STOPPING SHOW... *****");
+    console.log(`*** We will set light state to ${lightsOn} ***`);
+    this.audioPlayer.stop();
+    await this.wemoAdapter.setState(lightsOn);
+    this._showIsPlaying.setState(false);
+    console.log("******* STOW SHOPPED *******");
   }
 
   async _stopShow() {
+    // this will automatically cause _cueShowEnd to run
     this.audioPlayer.stop();
-    await this.wemoAdapter.setState(false);
-    this._showIsPlaying.setState(false);
   }
 
   // register routes with app

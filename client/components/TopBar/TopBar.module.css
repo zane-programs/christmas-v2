@@ -1,0 +1,72 @@
+.topBar {
+  width: 100%;
+  /* height: 50px; */
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  z-index: 9997;
+
+  -webkit-user-select: none;
+  user-select: none;
+
+  transition: box-shadow 200ms ease;
+}
+
+.topBar.scrolled {
+  box-shadow: 0 3px 8px 1px rgba(0, 0, 0, 0.37);
+}
+
+.topBar .pageTitle {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: #fff;
+
+  /* text-align: center; */
+
+  /* top right bottom left */
+  margin: env(safe-area-inset-top, 0px) 0px 0px 0px;
+  padding: 0;
+
+  display: inline-block;
+
+  /* ew */
+  position: relative;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.topBar .refreshButton {
+  /* ew again */
+  position: absolute;
+  top: calc(50% + env(safe-area-inset-top, 0px) / 2);
+  right: 20px;
+  transform: translateY(-50%);
+
+  background-color: transparent;
+
+  border: none;
+  outline: none;
+
+  font-size: 30px;
+  width: 60px;
+  height: 60px;
+
+  cursor: pointer;
+}
+
+.topBar .refreshButton .refreshButtonIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  color: #fff;
+
+  transition: transform 400ms cubic-bezier(0.23, 1.02, 1, 0.88);
+}
+
+.topBar .refreshButton.active .refreshButtonIcon {
+  transform: translate(-50%, -50%) rotate(360deg);
+}

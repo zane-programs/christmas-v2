@@ -23,9 +23,11 @@ module.exports = class WemoAdapter {
     console.log("init wemo");
     const self = this;
     this._wemo.discover(function discoverDevices(_err, deviceInfo) {
-      console.log("found one");
+      console.log("Discovered device");
       if (deviceInfo.serialNumber === self._serialNumber) {
-        console.log("found THE one");
+        console.log(
+          `Discovered target device (serial number: ${deviceInfo.serialNumber})`
+        );
         self._client = self._wemo.client(deviceInfo);
         self._client.on("binaryState", (value) => {
           console.log(`FROM SUBSCRIPTION - Binary state changed to ${value}`);
@@ -88,7 +90,6 @@ module.exports = class WemoAdapter {
     // when binary state changes
     for (const listener of this._changeListeners) {
       listener(Boolean(parseInt(value)));
-      console.log("Listener fired");
     }
   }
 };

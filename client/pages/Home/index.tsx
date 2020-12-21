@@ -4,9 +4,13 @@ import { HiLightBulb, HiOutlineLightBulb } from "react-icons/hi";
 
 // context
 import { SocketContext, StatusContext, ThemeContext } from "../../App";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 // components
 import StartStopButton from "../../components/StartStopButton";
+
+// hooks
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 
 export default function Home() {
   const { emitEvent, isConnected, isUpdatingStatus } = useContext(
@@ -14,13 +18,14 @@ export default function Home() {
   );
   const status = useContext(StatusContext);
   const { theme } = useContext(ThemeContext);
+  const { width } = useWindowDimensions();
 
   const confettiConfig: ConfettiConfig = useMemo(() => {
     return {
       angle: 90,
-      spread: window.innerWidth,
-      startVelocity: Math.round(85 * (window.innerWidth / 1100)),
-      elementCount: Math.round(500 * (window.innerWidth / 1000)),
+      spread: width,
+      startVelocity: Math.round(85 * (width / 1100)),
+      elementCount: Math.round(500 * (width / 1000)),
       dragFriction: 0.1,
       duration: 5500,
       stagger: 3,
@@ -28,7 +33,7 @@ export default function Home() {
       height: "12px",
       colors: theme.confettiColors,
     };
-  }, [theme.confettiColors]);
+  }, [theme.confettiColors, width]);
 
   const startStopButtonRef:
     | React.RefObject<HTMLButtonElement>
@@ -75,6 +80,6 @@ export default function Home() {
       </button>
     </>
   ) : (
-    <div>Connecting...</div>
+    <LoadingSpinner color={theme.mainColor} />
   );
 }

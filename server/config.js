@@ -22,5 +22,10 @@ module.exports = {
       credentials: true,
     },
   },
+  audio: {
+    directory: "audio",
+    intro: process.env.AUDIO_INTRO_FILENAME,
+    main: process.env.AUDIO_MAIN_FILENAME,
+  },
   wemoSerialNumber: process.env.WEMO_SERIAL_NUMBER,
 };
