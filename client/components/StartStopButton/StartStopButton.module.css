@@ -23,7 +23,7 @@
 }
 
 .button:focus {
-  box-shadow: inset 0 0 0 1px #52030a;
+  box-shadow: inset 0 0 0 2px #1e90ff;
 }
 
 .icon {
