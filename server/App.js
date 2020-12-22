@@ -192,7 +192,6 @@ class App {
    */
   async _emitStatus() {
     // emit status (for when status changes)
-    console.log("Status change"); // will prob remove later
     if (this._io && this._io.emit)
       this._io.emit("status", await this.getStatus());
   }

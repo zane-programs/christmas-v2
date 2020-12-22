@@ -121,9 +121,11 @@ module.exports = class WemoAdapter {
   _runChangeListeners(value) {
     // run all change listeners
     // when binary state changes
-    console.log(`    Binary state changed to ${value}`);
+    const finalValue =
+      typeof value === "boolean" ? value : Boolean(parseInt(value));
+    console.log(`    Binary state changed to ${finalValue}`);
     for (const listener of this._changeListeners) {
-      listener(Boolean(parseInt(value)));
+      listener(finalValue);
     }
   }
 
