@@ -33,7 +33,6 @@ function NavItem({ name, Icon, ActiveIcon, path }: NavItemInterface) {
     <button
       className={styles.navItem + (isActive ? " " + styles.activeItem : "")}
       onClick={() => navigate(path)}
-      title={name}
       aria-label={name}
       tabIndex={0}
     >

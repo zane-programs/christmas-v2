@@ -8,6 +8,7 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 
 // components
 import StartStopButton from "../../components/StartStopButton";
+import usePageTitle from "../../hooks/usePageTitle";
 
 // hooks
 import useWindowDimensions from "../../hooks/useWindowDimensions";
@@ -19,6 +20,9 @@ export default function Home() {
   const status = useContext(StatusContext);
   const { theme } = useContext(ThemeContext);
   const { width } = useWindowDimensions();
+
+  // set page title
+  usePageTitle("Home");
 
   const confettiConfig: ConfettiConfig = useMemo(() => {
     return {

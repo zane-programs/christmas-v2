@@ -20,7 +20,6 @@ function RefreshButton() {
       className={styles.refreshButton + (active ? " " + styles.active : "")}
       onClick={reloadPage}
       aria-label="Refresh"
-      title="Refresh"
     >
       <IoRefresh className={styles.refreshButtonIcon} />
       <ScreenReaderText>Refresh</ScreenReaderText>

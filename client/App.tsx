@@ -19,7 +19,6 @@ import BottomNav from "./components/BottomNav";
 // hooks
 import useWindowDimensions from "./hooks/useWindowDimensions";
 
-/* TODO: use React.lazy for these and add a loading spinner */
 // pages
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
@@ -47,6 +46,7 @@ export default function App() {
     [socket]
   );
 
+  // init socket.io
   useEffect(() => {
     socket.on("connect", () => setIsConnected(true));
     socket.on("disconnect", () => setIsConnected(false));
@@ -55,6 +55,11 @@ export default function App() {
       setUpdatingStatus(false);
     });
   }, [socket]);
+
+  // set page title when pageTitle state changes
+  useEffect(() => {
+    document.title = (pageTitle ? `${pageTitle} | ` : "") + "Christmas";
+  }, [pageTitle]);
 
   return (
     <SocketContext.Provider

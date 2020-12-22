@@ -14,7 +14,7 @@ ReactDOM.render(
     <App />
     <PWAPrompt
       timesToShow={3}
-      copyBody="Add to your home screen for a more app-like experience. Merry Christmas!"
+      copyBody="Add to your Home Screen for a more app-like experience. Merry Christmas!"
     />
   </BrowserRouter>,
   document.getElementById("root")
