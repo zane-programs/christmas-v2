@@ -6,11 +6,10 @@ const Wemo = require("wemo-client");
  * @returns {void}
  */
 
- /**
+/**
  * @callback initCallback
  * @returns {void}
  */
-
 
 module.exports = class WemoAdapter {
   constructor(serialNumber) {
@@ -39,7 +38,7 @@ module.exports = class WemoAdapter {
         );
         self._client = self._wemo.client(deviceInfo);
         self._client.on("binaryState", (value) => {
-          console.log(`FROM SUBSCRIPTION - Binary state changed to ${value}`);
+          console.log("** Change from subscription:");
           self._runChangeListeners(value);
         });
         cb(); // done!
@@ -76,7 +75,10 @@ module.exports = class WemoAdapter {
       if (this.clientReady) {
         this._client.setBinaryState(Number(state), (err, _response) => {
           // just in case the subscription fails, send the state in 600 ms
-          setTimeout(() => this._runChangeListeners(this.getState()), 600);
+          setTimeout(async () => {
+            console.log("** Change from setState call:");
+            this._runChangeListeners(await this.getState());
+          }, 600);
           err ? reject(err) : resolve();
         });
       } else {
@@ -119,6 +121,7 @@ module.exports = class WemoAdapter {
   _runChangeListeners(value) {
     // run all change listeners
     // when binary state changes
+    console.log(`    Binary state changed to ${value}`);
     for (const listener of this._changeListeners) {
       listener(Boolean(parseInt(value)));
     }
@@ -138,6 +141,7 @@ module.exports = class WemoAdapter {
       // just in case the subscription fails
       let currentState = await this.getState();
       if (this._previousState != currentState) {
+        console.log("** Change from backup interval:");
         this._runChangeListeners(currentState);
       }
       this._previousState = currentState;
