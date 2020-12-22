@@ -5,8 +5,9 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
     />
+    <meta name="HandheldFriendly" content="true" />
     <meta name="theme-color" content="#ffffff" />
     <meta
       name="description"
@@ -22,11 +23,14 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.webmanifest" />
+    <!-- PWACompat for Web Manifest polyfill -->
     <script
       async
-      src="https://unpkg.com/pwacompat"
+      src="https://cdn.jsdelivr.net/npm/pwacompat"
       crossorigin="anonymous"
     ></script>
+    <!-- unfocus - show outlines when keyboard is used (for purposes of accessibility) -->
+    <script src="https://cdn.jsdelivr.net/gh/nuclei/unfocus/dist/unfocus.js"></script>
 
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.

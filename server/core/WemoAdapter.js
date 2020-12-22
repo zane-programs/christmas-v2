@@ -1,5 +1,17 @@
 const Wemo = require("wemo-client");
 
+/**
+ * @callback changeCallback
+ * @param  {*} value - Value of array element
+ * @returns {void}
+ */
+
+ /**
+ * @callback initCallback
+ * @returns {void}
+ */
+
+
 module.exports = class WemoAdapter {
   constructor(serialNumber) {
     this._client = null;
@@ -14,7 +26,7 @@ module.exports = class WemoAdapter {
   /**
    * Initializes Wemo adapter and then runs
    * callback function when done (cb)
-   * @param {function} cb callback function
+   * @param {initCallback} cb callback function
    */
   init(cb) {
     console.log("init wemo");
@@ -85,7 +97,7 @@ module.exports = class WemoAdapter {
   /**
    * Adds change listener that runs when
    * the binary state changes
-   * @param {function} listener
+   * @param {changeCallback} listener
    */
   addChangeListener(listener) {
     this._changeListeners.push(listener);

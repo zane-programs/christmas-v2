@@ -12,7 +12,10 @@ import reportWebVitals from "./reportWebVitals";
 ReactDOM.render(
   <BrowserRouter>
     <App />
-    <PWAPrompt timesToShow={3} />
+    <PWAPrompt
+      timesToShow={3}
+      copyBody="Add to your home screen for a more app-like experience. Merry Christmas!"
+    />
   </BrowserRouter>,
   document.getElementById("root")
 );
@@ -20,4 +23,4 @@ ReactDOM.render(
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+reportWebVitals(console.log);

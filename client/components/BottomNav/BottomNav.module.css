@@ -39,6 +39,7 @@
   position: relative;
 
   border: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .bottomNav .navItem.activeItem {

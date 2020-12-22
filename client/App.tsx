@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { Outlet, Route, Routes } from "react-router";
+import { Outlet, Route, Routes, useLocation } from "react-router";
 import io from "socket.io-client";
 
 // theme
@@ -77,14 +77,19 @@ export default function App() {
 }
 
 function AppLayout() {
-  // TODO: Make this a real app layout+
   const { theme } = useContext(ThemeContext);
   const { height } = useWindowDimensions();
+  const { pathname } = useLocation();
 
   // set bg color of page as well
   useEffect(() => {
     document.body.style.backgroundColor = theme.backgroundColor;
   }, [theme.backgroundColor]);
+
+  // scroll restoration on pathname change
+  useEffect(() => {
+    window.scrollTo(0, 0); // reset scroll position
+  }, [pathname]);
 
   return (
     <>

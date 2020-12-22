@@ -1,5 +1,11 @@
 // adapted this from one of my other projects LOL
 
+/**
+ * @callback changeCallback
+ * @param  {*} value - Value of array element
+ * @returns {void}
+ */
+
 module.exports = class State {
   constructor(initialState) {
     this._state = typeof initialState === "undefined" ? {} : initialState;
@@ -27,7 +33,7 @@ module.exports = class State {
   /**
    * Adds change listener that runs
    * when the state changes
-   * @param {function} listener
+   * @param {changeCallback} listener
    */
   addChangeListener(listener) {
     this._listeners.push(listener);
