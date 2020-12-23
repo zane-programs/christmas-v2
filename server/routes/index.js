@@ -53,6 +53,8 @@ module.exports = function IndexRouter(app, _io) {
     res.status(200).send(app.wemoAdapter.clientReady)
   );
 
+  router.get("/test", (_req, res) => res.status(200).send("Hey Zane"));
+
   router.get("/stopServer", (_req, _res) => process.exit(0));
 
   return router;
