@@ -11,8 +11,7 @@ export interface Theme {
 }
 
 const theme: Theme = {
-  // mainColor: "#b3000c",
-  mainColor: "#0000ff",
+  mainColor: "#b3000c",
   backgroundColor: "#ffe9ea",
   confettiColors: ["#b3000c", "#42692f"],
   topBarHeight: "75px",
