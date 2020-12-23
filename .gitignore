@@ -24,3 +24,6 @@ yarn-error.log*
 
 # audio files (for copyright purposes)
 server/audio
+
+# eslintcache drives me crazy
+.eslintcache
