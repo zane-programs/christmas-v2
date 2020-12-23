@@ -25,7 +25,15 @@ import Settings from "./pages/Settings";
 
 export default function App() {
   const socket = useMemo(
-    () => io(process.env.REACT_APP_API_HOST as string),
+    // () => io(process.env.REACT_APP_API_HOST as string),
+    () =>
+      io(
+        window.location.protocol +
+          "//" +
+          window.location.hostname +
+          ":" +
+          process.env.REACT_APP_API_PORT
+      ),
     []
   );
 

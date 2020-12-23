@@ -2,7 +2,7 @@
 require("dotenv").config();
 
 module.exports = {
-  port: process.env.API_PORT, // API port
+  port: process.env.REACT_APP_API_PORT, // API port
   // Express route config
   routes: [
     {
