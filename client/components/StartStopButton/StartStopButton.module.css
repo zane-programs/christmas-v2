@@ -43,11 +43,11 @@
 
 .icon.triangle {
   border-top: 50px solid transparent;
-  border-left: 85px solid #fff;
+  border-left: 100px solid #fff;
   border-bottom: 50px solid transparent;
-  border-right: 50px solid transparent;
+  border-right: 0px solid transparent;
 
-  transform: translate(calc(-50% + 40px), -50%) rotate(0deg) scale(1.2);
+  transform: translate(calc(-50% + 10px), -50%) rotate(0deg);
 
   border-radius: 0px;
 }
@@ -58,7 +58,7 @@
   border-bottom: 50px solid #fff;
   border-right: 50px solid #fff;
 
-  transform: translate(-50%, -50%) rotate(-90deg) scale(1);
+  transform: translate(-50%, -50%) rotate(-90deg);
 
   border-radius: 8px;
 }
