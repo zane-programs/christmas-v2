@@ -4,6 +4,7 @@ import { HiLightBulb, HiOutlineLightBulb } from "react-icons/hi";
 
 // context
 import { SocketContext, StatusContext, ThemeContext } from "../../App";
+import BlockButton from "../../components/BlockButton";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
 // components
@@ -12,6 +13,9 @@ import usePageTitle from "../../hooks/usePageTitle";
 
 // hooks
 import useWindowDimensions from "../../hooks/useWindowDimensions";
+
+// styles
+import styles from "./Home.module.css";
 
 export default function Home() {
   const { emitEvent, isConnected, isUpdatingStatus } = useContext(
@@ -75,13 +79,15 @@ export default function Home() {
         bgColor={theme.mainColor}
         ref={startStopButtonRef}
       />
-      <button
-        onClick={() => emitEvent(true, "toggleLight")}
-        disabled={status.isPlaying || isUpdatingStatus}
-      >
-        {status.lightsOn ? <HiLightBulb /> : <HiOutlineLightBulb />}
-        Turn Light {status.lightsOn ? "Off" : "On"}
-      </button>
+      <div className={styles.homeMiscButtons}>
+        <BlockButton
+          onClick={() => emitEvent(true, "toggleLight")}
+          disabled={status.isPlaying || isUpdatingStatus}
+          IconComponent={status.lightsOn ? HiLightBulb : HiOutlineLightBulb}
+        >
+          Turn Light {status.lightsOn ? "Off" : "On"}
+        </BlockButton>
+      </div>
     </>
   ) : (
     <LoadingSpinner color={theme.mainColor} />
