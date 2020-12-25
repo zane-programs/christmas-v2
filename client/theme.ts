@@ -16,7 +16,7 @@ const theme: Theme = {
   confettiColors: ["#b3000c", "#42692f"],
   topBarHeight: "75px",
   topBarFontSize: "25px",
-  bottomNavHeight: "120px",
+  bottomNavHeight: "100px",
   bodyPadding: "20px",
 };
 
