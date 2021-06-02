@@ -2,7 +2,7 @@
 
 My Christmas project update for 2020 (original project is [node-christmas](https://github.com/zane-programs/node-christmas))
 
-![Animation depicting user interface](46FF68A0-ABF8-4BBF-826F-5626CDF2C212.gif)
+**[Click here to watch it in action](https://youtu.be/ZcKNGspmwd4)**
 
 ## Instructions
 
